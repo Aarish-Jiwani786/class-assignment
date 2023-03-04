@@ -3,6 +3,11 @@ import { User } from '../entities/User';
 
 const userRepository = AppDataSource.getRepository(User);
 
+async function allUserData(): Promise<User[]> {
+  const allUsers = await userRepository.find();
+  return allUsers;
+}
+
 async function addUser(email: string, passwordHash: string): Promise<User> {
   // 1) Create a new user object and set the properties
   let newUser = new User();
@@ -19,4 +24,37 @@ async function getUserByEmail(email: string): Promise<User | null> {
   return user;
 }
 
-export { addUser, getUserByEmail };
+async function getUserById(userId: string): Promise<User | null> {
+  const user = await userRepository.findOne({
+    select: {
+      userId: true,
+      email: true,
+      profileViews: true,
+      verifiedEmail: true,
+    },
+    where: { userId },
+  });
+  return user;
+}
+
+async function getViralUsers(): Promise<User[]> {
+  const viralUsers = await userRepository
+    .createQueryBuilder('user')
+    .where('profileViews >= :viralAmount', { viralAmount: 1000 })
+    .select(['user.email', 'user.profileViews', 'userId'])
+    .getMany();
+
+  return viralUsers;
+}
+
+async function getUsersByViews(minViews: number): Promise<User[]> {
+  const viralUsers = await userRepository
+    .createQueryBuilder('user')
+    .where('profileViews >= :minViews', { minViews })
+    .select(['user.email', 'user.userId', 'user.profileViews', 'user.joinedOn'])
+    .getMany();
+
+  return viralUsers;
+}
+
+export { allUserData, addUser, getUserByEmail, getUserById, getViralUsers, getUsersByViews };

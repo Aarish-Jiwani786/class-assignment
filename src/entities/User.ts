@@ -13,7 +13,7 @@ export class User {
 
   @Column({ default: false })
   verifiedEmail: boolean;
-  
+
   @Column({ default: 0 })
   profileViews: number;
 }
