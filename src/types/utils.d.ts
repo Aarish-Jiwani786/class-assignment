@@ -8,3 +8,12 @@ type NewUserRequest = {
   email: string;
   password: string;
 };
+
+type UserIdParam = {
+  userId: string;
+};
+
+type NewEmailBody = {
+  userId: string;
+  email: string;
+};

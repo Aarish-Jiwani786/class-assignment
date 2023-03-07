@@ -57,4 +57,35 @@ async function getUsersByViews(minViews: number): Promise<User[]> {
   return viralUsers;
 }
 
-export { allUserData, addUser, getUserByEmail, getUserById, getViralUsers, getUsersByViews };
+async function incrementProfileViews(userData: User): Promise<User> {
+  const updatedUser = userData;
+  updatedUser.profileViews += 1;
+  await userRepository
+    .createQueryBuilder()
+    .update(User)
+    .set({ profileViews: updatedUser.profileViews })
+    .where({ userId: updatedUser.userId })
+    .execute();
+  return updatedUser;
+}
+
+async function updateEmailAddress(userId: string, newEmail: string): Promise<void> {
+  // TODO: Implement me!
+  await userRepository
+    .createQueryBuilder()
+    .update(User)
+    .set({ email: newEmail })
+    .where({ userId })
+    .execute();
+}
+
+export {
+  allUserData,
+  addUser,
+  getUserByEmail,
+  getUserById,
+  getViralUsers,
+  getUsersByViews,
+  incrementProfileViews,
+  updateEmailAddress,
+};
