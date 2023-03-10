@@ -78,7 +78,15 @@ async function updateUserEmail(req: Request, res: Response): Promise<void> {
     return;
   }
 
-  await updateEmailAddress(userId, email);
+  try {
+    await updateEmailAddress(userId, email);
+    user.email = email;
+  } catch (err) {
+    console.error(err);
+    const databaseErrorMessage = parseDatabaseError(err);
+    res.sendStatus(500).json(databaseErrorMessage);
+  }
+
   res.sendStatus(200);
 }
 

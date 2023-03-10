@@ -1,7 +1,13 @@
 import './config'; // Load environment variables
 import 'express-async-errors'; // Enable default error handling for async errors
 import express, { Express } from 'express';
-import { registerUser, logIn, getAllUsers, getUserProfileData } from './controllers/UserController';
+import {
+  registerUser,
+  logIn,
+  getAllUsers,
+  getUserProfileData,
+  // updateUserEmail,
+} from './controllers/UserController';
 
 const app: Express = express();
 app.use(express.json());
