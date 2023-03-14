@@ -10,11 +10,11 @@ export class Book {
   @Column({ unique: true })
   title: string;
 
-  @Column()
-  yearOfFirstPublication: string;
+  @Column({ nullable: true })
+  publicationYear: number;
 
   @Column({ default: false })
-  publicDomain: boolean;
+  inPublicDomain: boolean;
 
   @OneToMany(() => Review, (review) => review.book)
   reviews: Relation<Review>[];

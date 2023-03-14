@@ -10,7 +10,7 @@ export class Author {
   name: string;
 
   @Column({ default: 'unknown' })
-  country: string;
+  countryOfOrigin: string;
 
   @ManyToMany(() => Book, (book) => book.author)
   book: Relation<Book>[];
